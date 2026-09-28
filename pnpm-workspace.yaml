@@ -1,0 +1,43 @@
+# Workspaces: every publishable/private package lives in packages/*
+packages:
+  - "packages/*"
+
+# --- pnpm configuration (used to live in .npmrc) ---
+nodeLinker: isolated
+autoInstallPeers: true
+strictPeerDependencies: false
+
+# Prefer workspace packages over the registry
+linkWorkspacePackages: true
+preferWorkspacePackages: true
+saveWorkspaceProtocol: rolling
+sharedWorkspaceLockfile: true
+
+# Concurrent execution of workspace scripts
+workspaceConcurrency: 4
+
+# --- Catalog: centralized dependency versions ---
+# Referenced from each package.json with "catalog:"
+catalogMode: prefer
+catalog:
+  "@changesets/cli": 3.0.3
+  "@commitlint/cli": 21.2.3
+  "@eslint/js": 10.0.1
+  "@types/node": 26.6.3
+  "@vitest/coverage-v8": 5.0.2
+  eslint: 10.11.0
+  eslint-config-prettier: 10.1.8
+  eslint-plugin-import-x: 4.17.1
+  globals: 17.12.0
+  husky: 9.1.7
+  lint-staged: 17.6.0
+  prettier: 3.9.9
+  typescript-eslint: 8.70.1
+  vite: 8.3.1
+  vitest: 5.0.2
+
+# --- Approved install scripts (pnpm blocks everything else) ---
+allowBuilds:
+  esbuild: true
+  unrs-resolver: true
+  "@swc/core": true

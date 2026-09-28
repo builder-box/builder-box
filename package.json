@@ -1,0 +1,59 @@
+{
+  "name": "@builder-box/monorepo",
+  "version": "0.0.0",
+  "private": true,
+  "description": "A development kit with modules, components, and libraries that will allow you to develop robust applications quickly and easily.",
+  "license": "MIT",
+  "author": "Jerry Anselmi <jerry.anselmi@gmail.com>",
+  "type": "module",
+  "packageManager": "pnpm@12.4.1",
+  "engines": {
+    "node": ">=24.20.0 <25",
+    "pnpm": ">=12.4.1 <13"
+  },
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "^12.4.1",
+      "onFail": "error"
+    },
+    "runtime": {
+      "name": "node",
+      "version": "^24.20.0",
+      "onFail": "error"
+    }
+  },
+  "scripts": {
+    "prepare": "husky",
+    "build": "pnpm -r --filter \"./packages/*\" run build",
+    "dev": "pnpm -r --filter \"./packages/*\" run dev",
+    "typecheck": "tsc -p tsconfig.json && pnpm -r --filter \"./packages/*\" run typecheck",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:cov": "vitest run --coverage",
+    "clean": "pnpm -r --filter \"./packages/*\" exec rm -rf dist && rm -rf coverage"
+  },
+  "devDependencies": {
+    "@changesets/cli": "catalog:",
+    "@commitlint/cli": "catalog:",
+    "@eslint/js": "catalog:",
+    "@types/node": "catalog:",
+    "@typescript/native": "npm:typescript@7.0.2",
+    "@vitest/coverage-v8": "catalog:",
+    "eslint": "catalog:",
+    "eslint-config-prettier": "catalog:",
+    "eslint-plugin-import-x": "catalog:",
+    "globals": "catalog:",
+    "husky": "catalog:",
+    "lint-staged": "catalog:",
+    "prettier": "catalog:",
+    "typescript": "npm:@typescript/typescript6@6.0.2",
+    "typescript-eslint": "catalog:",
+    "vite": "catalog:",
+    "vitest": "catalog:"
+  }
+}
