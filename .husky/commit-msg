@@ -1,0 +1,6 @@
+# Skip Git hooks in CI pipelines.
+if [ "$CI" = "true" ]; then
+  exit 0
+fi
+
+pnpm exec commitlint --edit "$1"

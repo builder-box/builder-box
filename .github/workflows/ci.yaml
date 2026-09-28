@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Git hooks (husky) must not run in pipelines.
+  HUSKY: 0
+
+jobs:
+  verify:
+    name: Lint, typecheck, test & build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # TODO: flesh out the pipeline. Planned steps:
+      #   - run: pnpm format:check
+      #   - run: pnpm lint
+      #   - run: pnpm typecheck
+      #   - run: pnpm test:cov
+      #   - run: pnpm build
+      #   - uses: codecov/codecov-action@v5
+      #     with:
+      #       files: ./coverage/lcov.info
+      - name: Placeholder
+        run: |
+          echo "TODO: flesh out the CI pipeline"
