@@ -79,7 +79,6 @@ Work is tracked in **Jira**, in the **BBX** project. Ticket keys look like `BBX-
 - Use the available Jira tooling to read ticket context (summary, acceptance criteria, status,
   links) when the task maps to a ticket.
 - Every unit of work should map to a BBX ticket, and the ticket key must appear in the branch name.
-- Do not create, edit, or transition Jira issues unless explicitly asked.
 
 ### Branches
 

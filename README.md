@@ -1,5 +1,7 @@
 # builder-box
 
+[![codecov](https://codecov.io/gh/builder-box/builder-box/graph/badge.svg?token=JtxivwZiYW)](https://codecov.io/gh/builder-box/builder-box)
+
 A development kit with modules, components, and libraries that will allow you to develop robust
 applications quickly and easily.
 
