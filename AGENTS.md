@@ -102,14 +102,54 @@ ticket instead of a Conventional Commits type.
 - Commit messages start with the Jira ticket: `<BBX-NNN>: <subject>`.
   - Example: `BBX-1: update dependencies to fix vulnerabilities`
   - Enforced by commitlint through the `commit-msg` hook.
-- **All commits must be signed.** Unsigned commits are not accepted.
-  - GPG (example): `git config --local commit.gpgsign true` and
-    `git config --local user.signingkey <key-id>`.
-  - SSH (example): `git config --local gpg.format ssh` and
-    `git config --local user.signingkey <path-to-public-key>`.
-  - Verify with `git log --show-signature`.
-  - Enable **Require signed commits** in the GitHub ruleset/branch protection for `main` (and any
-    other protected branch).
+- **All commits must be signed.** Unsigned commits are rejected on `main` by the branch ruleset
+  (see [Protected branches](#protected-branches)).
+
+#### Signing setup
+
+Configure signing once; the settings below are the repository defaults.
+
+**GPG:**
+
+```sh
+git config --local commit.gpgsign true
+git config --local gpg.format openpgp
+git config --local user.signingkey <key-id>
+```
+
+**SSH:**
+
+```sh
+git config --local commit.gpgsign true
+git config --local gpg.format ssh
+git config --local user.signingkey <path-to-public-key>
+```
+
+- Add the **public** key to GitHub (`Settings → SSH and GPG keys`) as a _signing key_.
+- **Verify** with `git log --show-signature` (or `git log --no-pager --show-signature`) and confirm the
+  signature line reports `Good signature`.
+- If a commit is rejected as unsigned, check that the signing key matches the public key registered
+  on GitHub and that `commit.gpgsign` is `true` in the effective config.
+
+### Protected branches
+
+`main` is protected by a **repository ruleset** (no bypass actors). It enforces:
+
+| Rule                     | Effect                                                 |
+| ------------------------ | ------------------------------------------------------ |
+| `pull_request`           | Changes reach `main` only through a PR (squash/rebase) |
+| `required_signatures`    | Commits must be signed                                 |
+| `required_status_checks` | The CI check must pass before merging                  |
+| `non_fast_forward`       | Force pushes are blocked                               |
+| `deletion`               | The `main` branch cannot be deleted                    |
+
+- The required status check is **`Lint, typecheck, test & build`** (the `name` of the CI job). A PR is
+  blocked while that check is missing, running, or failing.
+- The ruleset sets `strict_required_status_checks_policy`: the PR branch must be up to date with
+  `main` before merging.
+- Because there are no bypass actors, **bots that push without signing are rejected**. If a bot
+  (e.g. Dependabot) needs to merge, add it as a bypass actor on the ruleset.
+- The ruleset is configured in the GitHub UI/API; it is **not** stored in the repository.
 
 ## Repository rules
 
